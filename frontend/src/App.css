@@ -10,6 +10,7 @@
 
 .App-header {
   font-size: 2rem;
+  font-weight: 1000;
   color: #fff;
   margin-bottom: 20px;
 }
@@ -31,6 +32,7 @@ button {
   background-image: linear-gradient(45deg, #89F7FE, #66A6FF);
   color: white;
   font-size: 1.2rem;
+  font-weight: 1000;
   cursor: pointer;
   transition: transform 0.2s ease;
   margin-bottom: 20px; /* Space between button and transcript box */
@@ -62,4 +64,40 @@ button:hover {
 .assistant {
   text-align: left;
   background-color: #f2f0a1;
+}
+
+
+.chat-window {
+  width: 70%;
+  height: 50vh;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.message-form {
+  display: flex;
+  margin-top: 20px;
+  width: 70%;
+}
+
+.message-input {
+  flex: 1;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.send-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  margin-left: 10px;
+  background-color: #009688;
+  color: white;
+  cursor: pointer;
 }
