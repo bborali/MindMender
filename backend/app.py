@@ -1,7 +1,20 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from openai import OpenAI
+from dotenv import load_dotenv
+import os
+# Load environment variables from .env file
+load_dotenv()
+
 app = Flask(__name__)
+
+# Read API key from environment variable
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+client = OpenAI(
+    api_key=OPENAI_API_KEY,
+)
+
 CORS(app)  # This is needed to allow your React app to make requests to your Flask app
 
 # You'll want to import or define your Python functions here
@@ -27,11 +40,9 @@ def transcribe_audio():
 
 # Set up OpenAI key
 
-
-client = OpenAI(
-    # defaults to os.environ.get("OPENAI_API_KEY")
-    api_key="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",
-)
+OPENAI_API_KEY=os.environ.get("OPENAI_API_KEY")
+print(OPENAI_API_KEY)
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 @app.route('/ask_gpt', methods=['POST'])
 def ask_gpt():
