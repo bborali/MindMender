@@ -1,6 +1,30 @@
-.App {
+/* .App {
   text-align: center;
   background: linear-gradient(135deg, #A9E4EF, #F2BAC9);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+} */
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+
+.App {
+  animation: gradientBG 15s ease infinite;
+  text-align: center;
+  background: linear-gradient(-45deg,  #c2e9fb, #ff9a9e);
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -9,7 +33,7 @@
 }
 
 .App-header {
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 1000;
   color: #fff;
   margin-bottom: 20px;
@@ -36,6 +60,7 @@ button {
   cursor: pointer;
   transition: transform 0.2s ease;
   margin-bottom: 20px; /* Space between button and transcript box */
+  margin-top: 20px; /* Space between button and transcript box */
 }
 
 button:hover {
@@ -101,3 +126,45 @@ button:hover {
   color: white;
   cursor: pointer;
 }
+
+.record-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background-color: #ff6347; /* Tomato */
+  color: white;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+
+.loading-indicator {
+  display: inline-block;
+  margin-left: 5px;
+  animation: loadingDots 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.loading-dots {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.loading-dots span {
+  animation: blink 1.4s infinite both;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffff;
+  margin: 0 2px;
+}
+
+.loading-dots span:nth-child(1) { animation-delay: 0s; }
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
