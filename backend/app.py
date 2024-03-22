@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import subprocess
 from werkzeug.utils import secure_filename
-from utils import transcribe_audio, ask_gpt, text_to_speech
+from utils import transcribe_audio, ask_gpt, text_to_speech, detect_intent
 import base64
 # Load environment variables from .env file
 load_dotenv()
@@ -47,6 +47,14 @@ CORS(app)  # This is needed to allow your React app to make requests to your Fla
 
 #         return jsonify({'Answer': answer})
 
+
+@app.route('/process_text', methods=['POST'])
+def process_text():
+    # Extract text from form-data
+    text = request.form.get('text', '')
+    # Simply return the received text as JSON
+    return jsonify({'received_text': text})
+
 @app.route('/transcribe_audio', methods=['POST'])
 def handle_request():
     if 'file' not in request.files:
@@ -64,8 +72,19 @@ def handle_request():
         # Transcription process
         transcription = transcribe_audio(save_path)
 
-        # Generate the answer from GPT (assuming `ask_gpt` is your function for this)
-        answer = ask_gpt(transcription)
+        # Do some intent detection o detect suicide or self harm 
+        intent = detect_intent(transcription)
+
+        # If a suicide or self-harm intent was detected 
+        if not(intent["intent"]=='General'):
+            answer = intent["message"]
+        else:
+            # Generate the answer from GPT (assuming `ask_gpt` is your function for this)
+            answer = ask_gpt(transcription)
+
+
+        # # Generate the answer from GPT (assuming `ask_gpt` is your function for this)
+        # answer = ask_gpt(transcription)
 
         # Generate the audio file for the answer
         # Assuming `text_to_speech` now just saves the file and returns the filename

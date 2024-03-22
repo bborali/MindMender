@@ -1,0 +1,188 @@
+/* .App {
+  text-align: center;
+  background: linear-gradient(135deg, #A9E4EF, #F2BAC9);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+} */
+
+@keyframes gradientBG {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  
+  
+  .Chat {
+    animation: gradientBG 15s ease infinite;
+    text-align: center;
+    background: linear-gradient(to right, #ff758c 0%, #ff7eb3 100%);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .App-header {
+    font-size: 3rem;
+    font-weight: 1000;
+    color: #fff;
+    margin-bottom: 20px;
+  }
+  
+  .container {
+    width: 70%; /* Wider container */
+    max-width: 800px; /* Optional: if you want a maximum width */
+    padding: 20px;
+    margin: 0 auto;
+    background: #ffffffee; /* Semi-transparent white */
+    border-radius: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  button {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 50px;
+    background-image: linear-gradient(45deg, #89F7FE, #66A6FF);
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 1000;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    margin-bottom: 20px; /* Space between button and transcript box */
+    margin-top: 20px; /* Space between button and transcript box */
+  }
+  
+  button:hover {
+    transform: scale(1.05);
+  }
+  
+  .transcript {
+    height: 300px; /* Adjust as needed */
+    overflow-y: auto;
+    background: #f0f0f0;
+    border-radius: 10px;
+    padding: 15px;
+  }
+  
+  .message {
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+  .user {
+    text-align: right;
+    background-color: #b2fab4;
+  }
+  
+  .assistant {
+    text-align: left;
+    background-color: #f2f0a1;
+  }
+  
+  
+  /* .chat-window {
+    width: 70%;
+    height: 50vh;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+  } */
+
+  .chat-window {
+    width: 70%;
+    height: 50vh;
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent white background */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Optional: Adds a light border for better definition */
+    backdrop-filter: blur(10px); /* This applies the blur effect */
+    -webkit-backdrop-filter: blur(10px); /* For Safari */
+    position: relative; /* To ensure the box shadow and other properties are rendered properly */
+    z-index: 1; /* Elevate the chat window above any blurred background */
+  }
+  
+  
+  .message-form {
+    display: flex;
+    margin-top: 20px;
+    width: 70%;
+  }
+  
+  .message-input {
+    flex: 1;
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  .send-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    margin-left: 10px;
+    background-color: #009688;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .record-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: #ff6347; /* Tomato */
+    color: white;
+    font-size: 3rem;
+    cursor: pointer;
+  }
+  
+  
+  .loading-indicator {
+    display: inline-block;
+    margin-left: 5px;
+    animation: loadingDots 1.5s infinite;
+  }
+  
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+  
+  .loading-dots {
+    display: inline-block;
+    margin-left: 5px;
+  }
+  
+  .loading-dots span {
+    animation: blink 1.4s infinite both;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ffffff;
+    margin: 0 2px;
+  }
+  
+  .loading-dots span:nth-child(1) { animation-delay: 0s; }
+  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }

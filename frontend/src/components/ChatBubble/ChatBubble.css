@@ -7,11 +7,12 @@
   }
   
   .user {
-    background-color: #dcf8c6;
+    background-color: #218aff;
     align-self: flex-end;
+    color:rgb(255, 255, 255)f;
   }
   
   .assistant {
-    background-color: #ebebeb;
+    background-color: #d8d8d8;
   }
   
