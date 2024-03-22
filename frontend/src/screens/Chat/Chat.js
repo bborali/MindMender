@@ -21,8 +21,17 @@ const Chat = () => {
     // Log the final transcript of the user's message to the console
     if (isUser) {
       console.log("Final user transcript:", message);
+      
     }
   };
+
+  useEffect(() => {
+    scrollToBottom(); // Scroll to bottom whenever the transcript changes
+  }, [transcript]); // Add transcript as a dependency
+
+  useEffect(() => {
+    scrollToBottom(); // Scroll to bottom whenever the transcript changes
+  }, [interimTranscript]); // Add transcript as a dependency
 
   const scrollToBottom = () => {
     if (chatWindowRef.current) {
@@ -30,17 +39,55 @@ const Chat = () => {
     }
   };
 
+    // Function to speak out the text using text-to-speech
+    const speak = (text) => {
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+    };
+  
+    // Function to process the final transcript
+    const processFinalTranscript = async (finalTranscript) => {
+      try {
+        console.log("HERE")
+        // Use fetch or axios to make the API call
+        const response = await fetch('http://127.0.0.1:5000/process_text', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text: finalTranscript }),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+  
+        const data = await response.json();
+        // Assuming the backend returns a JSON object with a field 'answer'
+        const answer = data.answer;
+  
+        // Display the answer in the chat bubble
+        addMessageToTranscript(answer, false);
+
+        // Read the answer out loud
+        speak(answer);
+      } catch (error) {
+        console.error('There was a problem processing the final transcript:', error);
+      }
+    };
+
+  // Modify the handleSilence function
   const handleSilence = () => {
     // Log the current transcript from the ref, not the state
-    console.log("Silence detected.");
+    console.log("Silence detected. ");
 
-    // Clear the current transcript since silence is detected
     if (currentTranscriptRef.current.trim()) {
       addMessageToTranscript(currentTranscriptRef.current, true);
+      // Call the function to process the final transcript
+      processFinalTranscript(currentTranscriptRef.current);
       currentTranscriptRef.current = '';
     }
 
-    // Prepare for a new speech segment
     clearTimeout(silenceTimerRef.current);
   };
 
@@ -73,6 +120,7 @@ const Chat = () => {
         // If we have a final result, update the main transcript
         if (isFinal) {
           addMessageToTranscript(currentTranscriptRef.current, true);
+          processFinalTranscript(currentTranscriptRef.current); // Call the API with the final transcript
           setInterimTranscript(''); // Clear interim transcript
           currentTranscriptRef.current = ''; // Clear the current transcript ref
         }

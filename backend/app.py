@@ -50,10 +50,19 @@ CORS(app)  # This is needed to allow your React app to make requests to your Fla
 
 @app.route('/process_text', methods=['POST'])
 def process_text():
-    # Extract text from form-data
-    text = request.form.get('text', '')
-    # Simply return the received text as JSON
-    return jsonify({'received_text': text})
+    # Get JSON data from the request
+    data = request.get_json()
+
+    # Retrieve 'text' from the JSON data
+    text = data.get('text', '')
+
+    # For now, just echo the received text back in the response
+    response = {
+        'answer': text
+    }
+
+    # Return the response as JSON
+    return jsonify(response)
 
 @app.route('/transcribe_audio', methods=['POST'])
 def handle_request():

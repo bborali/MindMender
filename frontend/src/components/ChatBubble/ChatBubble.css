@@ -1,18 +1,23 @@
+/* ChatBubble.css */
 .chat-bubble {
-    padding: 10px 15px;
-    border-radius: 15px;
-    margin: 10px;
-    max-width: 70%;
-    align-self: flex-start;
-  }
-  
-  .user {
-    background-color: #218aff;
-    align-self: flex-end;
-    color:rgb(255, 255, 255)f;
-  }
-  
-  .assistant {
-    background-color: #d8d8d8;
-  }
-  
+  padding: 10px 15px;
+  border-radius: 18px; /* iMessage-like rounded corners */
+  margin: 8px 0; /* Spacing between messages */
+  max-width: 70%; /* Maximum width of bubble */
+  align-self: flex-start; /* Start alignment for assistant */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; /* iMessage-like font */
+}
+
+/* Style for bubbles from the user (right side) */
+.user {
+  background: #0b93f6; /* iMessage blue */
+  color: white;
+  align-self: flex-end; /* Align right for user messages */
+}
+
+/* Style for bubbles from the assistant (left side) */
+.assistant {
+  background-color: #e5e5ea; /* iMessage grey */
+  color: black;
+}
