@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import subprocess
 from werkzeug.utils import secure_filename
-from utils import transcribe_audio, ask_gpt, text_to_speech, detect_intent
+from utils import transcribe_audio, ask_gpt, text_to_speech, detect_intent,generate_response
 import base64
 # Load environment variables from .env file
 load_dotenv()
@@ -56,10 +56,18 @@ def process_text():
     # Retrieve 'text' from the JSON data
     text = data.get('text', '')
 
+    # Printing the user sentence
+    print("USER: ",text)
+
+    # Generate the response 
+    answer = generate_response(text)
     # For now, just echo the received text back in the response
     response = {
-        'answer': text
+        'answer': answer
     }
+
+    # Printing sytrem response 
+    print("SYSTEM: ", answer)
 
     # Return the response as JSON
     return jsonify(response)

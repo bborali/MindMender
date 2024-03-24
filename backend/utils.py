@@ -53,7 +53,7 @@ def ask_gpt(text):
         # gpt_response =response.choices[0].message.content.strip()
         # print("GPT Response:",gpt_response)
         # return gpt_response
-        return "This is the generated text"
+        return text
     except Exception as e:
         print("Error: "+str(e))
         return "Could not generate an answer."  # 500 is the status code for server error
@@ -64,36 +64,73 @@ def text_to_speech(text, filename='temp_audio.mp3'):
     tts.save(save_path)
     return save_path
 
-# Define a function to detect user intent based on the last message
-def detect_intent(user_message):
-    # Regular expressions to match phrases related to suicide thoughts and self-harm
-    suicide_phrases = re.compile(r'\b(suicid(e|al)|end it all|no point in living|kill myself)\b', re.IGNORECASE)
-    self_harm_phrases = re.compile(r'\b(cut myself|self[-\s]?harm|hurt myself)\b', re.IGNORECASE)
+# # Define a function to detect user intent based on the last message
+# def detect_intent(user_message):
+#     # Regular expressions to match phrases related to suicide thoughts and self-harm
+#     suicide_phrases = re.compile(r'\b(suicid(e|al)|end it all|no point in living|kill myself)\b', re.IGNORECASE)
+#     self_harm_phrases = re.compile(r'\b(cut myself|self[-\s]?harm|hurt myself)\b', re.IGNORECASE)
 
-    # Check if the user message contains any of the suicide-related phrases
-    if suicide_phrases.search(user_message):
-        return {
-            "intent": "Thoughts of Suicide",
-            "message": "It sounds like you're going through a really tough time right now. " \
-                       "I want you to know that help is available to you. " \
-                       "Please reach out to a friend, family member, or a professional therapist. " \
-                       "You can also call the National Suicide Prevention Lifeline at 1-800-273-TALK (1-800-273-8255) immediately."
-        }
+#     # Check if the user message contains any of the suicide-related phrases
+#     if suicide_phrases.search(user_message):
+#         return {
+#             "intent": "Thoughts of Suicide",
+#             "message": "It sounds like you're going through a really tough time right now. " \
+#                        "I want you to know that help is available to you. " \
+#                        "Please reach out to a friend, family member, or a professional therapist. " \
+#                        "You can also call the National Suicide Prevention Lifeline at 1-800-273-TALK (1-800-273-8255) immediately."
+#         }
     
-    # Check if the user message contains any of the self-harm-related phrases
-    elif self_harm_phrases.search(user_message):
-        return {
-            "intent": "Self-harm",
-            "message": "I'm hearing that you want to hurt yourself, and I'm really concerned for you. " \
-                       "It’s important to talk to someone about what you’re going through. " \
-                       "Please reach out to a healthcare professional or call the crisis hotline for support."
-        }
+#     # Check if the user message contains any of the self-harm-related phrases
+#     elif self_harm_phrases.search(user_message):
+#         return {
+#             "intent": "Self-harm",
+#             "message": "I'm hearing that you want to hurt yourself, and I'm really concerned for you. " \
+#                        "It’s important to talk to someone about what you’re going through. " \
+#                        "Please reach out to a healthcare professional or call the crisis hotline for support."
+#         }
     
-    # If no intent is detected, return a default response
+#     # If no intent is detected, return a default response
+#     else:
+#         return {
+#             "intent": "General",
+#             "message": "Let's talk more about what you're feeling right now."
+#         }
+
+
+def detect_intent(text):
+    # Define keywords for each intent
+    suicide_keywords = ["suicide", "end my life", "kill myself"]
+    self_harm_keywords = ["cut myself", "hurt myself", "self harm"]
+    helpline_keywords = ["need help", "crisis line", "helpline"]
+
+    # Detect suicide-related intent
+    if any(keyword in text.lower() for keyword in suicide_keywords):
+        return "suicide_intent"
+
+    # Detect self-harm intent
+    elif any(keyword in text.lower() for keyword in self_harm_keywords):
+        return "self_harm_intent"
+
+    # Detect requests for crisis helplines
+    elif any(keyword in text.lower() for keyword in helpline_keywords):
+        return "helpline_intent"
+
+    # No specific intent detected
+    return None
+
+def generate_response(text):
+    # Detect intent
+    intent = detect_intent(text)
+
+    # Handle detected intents with predefined responses
+    if intent == "suicide_intent":
+        return "It sounds like you're going through a really difficult time. I want you to know that help is available. Please reach out to a trusted individual or a professional helpline."
+    elif intent == "self_harm_intent":
+        return "It's important to talk about these feelings. Self-harm is a serious matter and I encourage you to seek support from someone you trust or a professional service."
+    elif intent == "helpline_intent":
+        return "If you're looking for support, various helplines are available depending on your location. It's a courageous step to ask for help, and I encourage you to take it."
+
+    # Fallback to GPT-based response for other queries
     else:
-        return {
-            "intent": "General",
-            "message": "Let's talk more about what you're feeling right now."
-        }
-
+        return ask_gpt(text)
 

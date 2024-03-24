@@ -1,13 +1,3 @@
-/* .App {
-  text-align: center;
-  background: linear-gradient(135deg, #A9E4EF, #F2BAC9);
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-} */
-
 @keyframes gradientBG {
     0% {
       background-position: 0% 50%;
@@ -49,61 +39,6 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-  button {
-    padding: 15px 30px;
-    border: none;
-    border-radius: 50px;
-    background-image: linear-gradient(45deg, #89F7FE, #66A6FF);
-    color: white;
-    font-size: 1.2rem;
-    font-weight: 1000;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    margin-bottom: 20px; /* Space between button and transcript box */
-    margin-top: 20px; /* Space between button and transcript box */
-  }
-  
-  button:hover {
-    transform: scale(1.05);
-  }
-  
-  .transcript {
-    height: 300px; /* Adjust as needed */
-    overflow-y: auto;
-    background: #f0f0f0;
-    border-radius: 10px;
-    padding: 15px;
-  }
-  
-  .message {
-    margin: 5px;
-    padding: 10px;
-    border-radius: 10px;
-  }
-  
-  .user {
-    text-align: right;
-    background-color: #b2fab4;
-  }
-  
-  .assistant {
-    text-align: left;
-    background-color: #f2f0a1;
-  }
-  
-  
-  /* .chat-window {
-    width: 70%;
-    height: 50vh;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-  } */
-
   .chat-window {
     width: 70%;
     height: 50vh;
@@ -120,69 +55,81 @@
     position: relative; /* To ensure the box shadow and other properties are rendered properly */
     z-index: 1; /* Elevate the chat window above any blurred background */
   }
-  
-  
-  .message-form {
-    display: flex;
-    margin-top: 20px;
-    width: 70%;
-  }
-  
-  .message-input {
-    flex: 1;
-    border-radius: 10px;
+
+  .button {
+    margin-top: 20px; /* Add space above the chat window */
+    min-width: 250px; /* Smaller width */
+    min-height: 50px; /* Smaller height */
+    font-family: 'Nunito', sans-serif;
+    font-size: 22px;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    font-weight: 700;
+    color: #ffffff;
+    background: #4FD1C5;
+  background: linear-gradient(90deg, rgba(129,230,217,1) 0%, rgba(79,209,197,1) 100%);
+    border: none;
+    border-radius: 1000px;
+    box-shadow: 12px 12px 24px rgba(79,209,197,.64);
+    transition: all 0.3s ease-in-out 0s;
+    cursor: pointer;
+    outline: none;
+    position: relative;
     padding: 10px;
-    border: 1px solid #ccc;
+    }
+  
+  button::before {
+  content: '';
+    border-radius: 1000px;
+    min-width: calc(250px + 12px);
+    min-height: calc(50px + 12px);
+    border: 6px solid #00FFCB;
+    box-shadow: 0 0 60px rgba(0,255,203,.64);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: all .3s ease-in-out 0s;
   }
   
-  .send-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 10px;
-    margin-left: 10px;
-    background-color: #009688;
-    color: white;
-    cursor: pointer;
+  .button:hover, .button:focus {
+    color: #ffffff;
+    transform: translateY(-6px);
   }
   
-  .record-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 20px;
-    background-color: #ff6347; /* Tomato */
-    color: white;
-    font-size: 3rem;
-    cursor: pointer;
+  button:hover::before, button:focus::before {
+    opacity: 1;
   }
   
-  
-  .loading-indicator {
-    display: inline-block;
-    margin-left: 5px;
-    animation: loadingDots 1.5s infinite;
+  button::after {
+    content: '';
+    width: 30px; height: 30px;
+    border-radius: 100%;
+    border: 6px solid #00FFCB;
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: ring 1.3s infinite;
   }
   
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+  button:hover::after, button:focus::after {
+    animation: none;
+    display: none;
   }
   
-  .loading-dots {
-    display: inline-block;
-    margin-left: 5px;
+  @keyframes ring {
+    0% {
+      width: 30px;
+      height: 30px;
+      opacity: 1;
+    }
+    100% {
+      width: 300px;
+      height: 300px;
+      opacity: 0;
+    }
   }
   
-  .loading-dots span {
-    animation: blink 1.4s infinite both;
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #ffffff;
-    margin: 0 2px;
-  }
-  
-  .loading-dots span:nth-child(1) { animation-delay: 0s; }
-  .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-  .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
