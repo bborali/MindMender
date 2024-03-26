@@ -20,4 +20,5 @@
 .assistant {
   background-color: #e5e5ea; /* iMessage grey */
   color: black;
+  align-self: flex-start;
 }

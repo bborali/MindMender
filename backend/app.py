@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import subprocess
 from werkzeug.utils import secure_filename
-from utils import transcribe_audio, ask_gpt, text_to_speech, detect_intent,generate_response
+from utils import ask_gpt, detect_intent,generate_response
 import base64
 # Load environment variables from .env file
 load_dotenv()
