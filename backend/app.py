@@ -60,7 +60,7 @@ def process_text():
     print("USER: ",text)
 
     # Generate the response 
-    answer = ask_llama(transcription)
+    answer = generate_response(text)
     # answer = generate_response(text)
     # For now, just echo the received text back in the response
     response = {
