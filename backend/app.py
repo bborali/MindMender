@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import subprocess
 from werkzeug.utils import secure_filename
-from utils import transcribe_audio, ask_gpt, text_to_speech, detect_intent,generate_response
+from utils import transcribe_audio, ask_gpt,ask_llama, text_to_speech, detect_intent,generate_response
 import base64
 # Load environment variables from .env file
 load_dotenv()
@@ -60,7 +60,8 @@ def process_text():
     print("USER: ",text)
 
     # Generate the response 
-    answer = generate_response(text)
+    answer = ask_llama(transcription)
+    # answer = generate_response(text)
     # For now, just echo the received text back in the response
     response = {
         'answer': answer
@@ -97,7 +98,8 @@ def handle_request():
             answer = intent["message"]
         else:
             # Generate the answer from GPT (assuming `ask_gpt` is your function for this)
-            answer = ask_gpt(transcription)
+            # answer = ask_gpt(transcription)
+            answer = ask_llama(transcription)
 
 
         # # Generate the answer from GPT (assuming `ask_gpt` is your function for this)

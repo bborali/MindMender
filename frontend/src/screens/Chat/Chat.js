@@ -176,9 +176,11 @@
 // export default Chat;
 
 import React, { useState, useEffect, useRef } from 'react';
-import './Chat.css';
+
 import ChatBubble from '../../components/ChatBubble/ChatBubble';
 import PopUp from '../../components/PopUp/PopUp';
+
+import './Chat.css';
 
 const Chat = () => {
   const [transcript, setTranscript] = useState([]);
@@ -217,6 +219,7 @@ const Chat = () => {
 
   const processFinalTranscript = async (finalTranscript) => {
     try {
+      console.log("here")
       const response = await fetch('http://127.0.0.1:5000/process_text', {
         method: 'POST',
         headers: {

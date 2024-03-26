@@ -1,12 +1,16 @@
 from pydub import AudioSegment
-import speech_recognition as sr
+# import speech_recognition as sr
 from openai import OpenAI
 import os
-from gtts import gTTS
+# from gtts import gTTS
 from IPython.display import Audio, display
 import torch
-from TTS.api import TTS
+# from TTS.api import TTS
 import re
+from torch import cuda, bfloat16
+import transformers
+from langchain.llms import HuggingFacePipeline
+
 
 def transcribe_audio(audio_file_path):
     # No need to save the file again, so you can skip directly to processing
@@ -30,7 +34,79 @@ def transcribe_audio(audio_file_path):
             return "Unable to understand audio"
         except sr.RequestError as e:
             return "Error requesting results; {0}".format(e)
-        
+
+
+def ask_llama(text):
+    HF_AUTH_TOKEN = os.environ.get("HF_AUTH_TOKEN")
+    print(HF_AUTH_TOKEN)
+
+    insert_prompt=text
+
+    model_id = 'meta-llama/Llama-2-13b-chat-hf'
+
+
+    device = f'cuda:{cuda.current_device()}' if cuda.is_available() else 'cpu'
+
+    # set quantization configuration to load large model with less GPU memory
+    # this requires the `bitsandbytes` library
+    bnb_config = transformers.BitsAndBytesConfig(
+        load_in_4bit=True,
+        bnb_4bit_quant_type='nf4',
+        bnb_4bit_use_double_quant=True,
+        bnb_4bit_compute_dtype=bfloat16
+    )
+
+    # begin initializing HF items, need auth token for these
+
+    model_config = transformers.AutoConfig.from_pretrained(
+        model_id,
+        use_auth_token=HF_AUTH_TOKEN
+    )
+
+    model = transformers.AutoModelForCausalLM.from_pretrained(
+        model_id,
+        trust_remote_code=True,
+        config=model_config,
+        quantization_config=bnb_config,
+        device_map='auto',
+        use_auth_token=HF_AUTH_TOKEN
+    )
+
+    # llm = HuggingFacePipeline(pipeline=generate_text)
+
+    # model.eval()
+    # print(f"Model loaded on {device}")
+
+    # The pipeline requires a tokenizer which handles the translation of human readable plaintext 
+    # to LLM readable token IDs. The Llama 2 13B models were trained using the Llama 2 13B tokenizer, 
+    # which we initialize like so:
+    tokenizer = transformers.AutoTokenizer.from_pretrained(
+        model_id,
+        use_auth_token=HF_AUTH_TOKEN
+    )
+
+    # Now we're ready to initialize the HF pipeline. 
+    # There are a few additional parameters that we must define here. 
+    # Comments explaining these have been included in the code.
+    generate_text = transformers.pipeline(
+        model=model, tokenizer=tokenizer,
+        return_full_text=True,  # langchain expects the full text
+        task='text-generation',
+        # we pass model parameters here too
+        temperature=0.0,  # 'randomness' of outputs, 0.0 is the min and 1.0 the max
+        max_new_tokens=512,  # mex number of tokens to generate in the output
+        repetition_penalty=1.1  # without this output begins repeating
+    )
+
+    res = generate_text(insert_prompt)
+    print(res[0]["generated_text"])
+
+    llm = HuggingFacePipeline(pipeline=generate_text)
+    llm_response=llm(prompt=insert_prompt)
+
+
+
+    return llm_response
 
 def ask_gpt(text):
 
@@ -132,5 +208,6 @@ def generate_response(text):
 
     # Fallback to GPT-based response for other queries
     else:
-        return ask_gpt(text)
+        # return ask_gpt(text)
+        return ask_llama(text)
 
