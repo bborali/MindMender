@@ -2,10 +2,10 @@
 import React from 'react';
 import './ChatBubble.css';
 
-const ChatBubble = ({ text, isUser }) => {
+const ChatBubble = ({ text, isUser , children}) => {
   return (
     <div className={`chat-bubble ${isUser ? 'user' : 'assistant'}`}>
-      {text}
+      {children || text}
     </div>
   );
 };

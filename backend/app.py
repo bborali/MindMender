@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv
+import os
+import subprocess
+from werkzeug.utils import secure_filename
 from utils import generate_response
-
+import base64
 # Load environment variables from .env file
 load_dotenv()
 

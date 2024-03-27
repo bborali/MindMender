@@ -91,18 +91,18 @@ def ask_gpt(text):
     insert_prompt = text  #@param {type: "string"}
     try:
        
-        # response = client.chat.completions.create(
-        # model=model_choice,
-        # messages=[
-        #         {"role": "system", "content": "As a skilled therapist, your aim is to offer comfort and insight in a manner that feels like a warm conversation. Each response is a unique reflection of the person's story, avoiding repetitive starts or endings. Instead, engage with genuine curiosity and succinct, metaphor-rich advice that sheds new light on their feelings or situation. When a topic is outside your expertise, gently guide them towards additional resources. Keep your guidance brief, nurturing a space for clarity and self-discovery through the thoughtful use of metaphors."},
-        #         {"role": "user", "content": insert_prompt}
-        # ]
-        # )
+        response = client.chat.completions.create(
+        model=model_choice,
+        messages=[
+                {"role": "system", "content": "As a skilled therapist, your aim is to offer comfort and insight in a manner that feels like a warm conversation. Each response is a unique reflection of the person's story, avoiding repetitive starts or endings. Instead, engage with genuine curiosity and succinct, metaphor-rich advice that sheds new light on their feelings or situation. When a topic is outside your expertise, gently guide them towards additional resources. Keep your guidance brief, nurturing a space for clarity and self-discovery through the thoughtful use of metaphors."},
+                {"role": "user", "content": insert_prompt}
+        ]
+        )
 
-        # gpt_response =response.choices[0].message.content.strip()
-        # print("GPT Response:",gpt_response)
-        # return gpt_response
-        return text
+        gpt_response =response.choices[0].message.content.strip()
+        print("GPT Response:",gpt_response)
+        return gpt_response
+        # return text
     except Exception as e:
         print("Error: "+str(e))
         return "Could not generate an answer."  # 500 is the status code for server error
@@ -144,6 +144,6 @@ def generate_response(text):
 
     # Fallback to GPT-based response for other queries
     else:
-        # return ask_gpt(text)
-        return ask_llama(text)
+        return ask_gpt(text)
+        # return ask_llama(text)
 
