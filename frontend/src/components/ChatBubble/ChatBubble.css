@@ -14,6 +14,7 @@
   background: #0b93f6; /* iMessage blue */
   color: white;
   align-self: flex-end; /* Align right for user messages */
+  text-align: right;
 }
 
 /* Style for bubbles from the assistant (left side) */
@@ -21,4 +22,5 @@
   background-color: #e5e5ea; /* iMessage grey */
   color: black;
   align-self: flex-start;
+  text-align: left;
 }

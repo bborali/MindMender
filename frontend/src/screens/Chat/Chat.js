@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-
+import AWS from 'aws-sdk';
 import ChatBubble from '../../components/ChatBubble/ChatBubble';
 import PopUp from '../../components/PopUp/PopUp';
-import LoadingDots from '../../components/LoadingDots/LoadingDots'
-
+import LoadingDots from '../../components/LoadingDots/LoadingDots';
 import './Chat.css';
+
+// Load AWS credentials
+import awsConfig from './aws.json'; // Adjust the path according to where your aws.json is located
 
 const Chat = () => {
   const [transcript, setTranscript] = useState([]);
@@ -16,6 +18,14 @@ const Chat = () => {
   const [interimTranscript, setInterimTranscript] = useState('');
   const [waitingForResponse, setWaitingForResponse] = useState(false);
 
+  // Configure AWS
+  AWS.config.update({
+    accessKeyId: awsConfig.accessKeyId,
+    secretAccessKey: awsConfig.secretAccessKey,
+    region: 'us-east-1' // Change to your Polly region if different
+  });
+
+  const polly = new AWS.Polly({apiVersion: '2016-06-10'});
 
   const addMessageToTranscript = (message, isUser) => {
     setTranscript(prevTranscript => [...prevTranscript, { text: message, isUser }]);
@@ -36,17 +46,34 @@ const Chat = () => {
   };
 
   const speak = (text) => {
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.onend = () => {
-      startRecording(); // Restart recording after speech has finished
+    const params = {
+      Text: text,
+      OutputFormat: 'mp3',
+      VoiceId: 'Joanna', // Choose a different voice as needed
+      Engine: 'neural'
     };
-    speechSynthesis.speak(utterance);
+
+    polly.synthesizeSpeech(params, (err, data) => {
+      if (err) {
+        console.error(err, err.stack);
+      } else {
+        const audioBlob = new Blob([data.AudioStream], {type: 'audio/mp3'});
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        audio.play();
+        audio.onended = () => {
+          startRecording(); // Restart recording after speech has finished
+        };
+      }
+    });
   };
 
   const processFinalTranscript = async (finalTranscript) => {
     try {
       setWaitingForResponse(true); // Start loading
-      const response = await fetch('http://127.0.0.1:5000/process_text', {
+
+
+      const response = await fetch('https://dff6-104-198-104-232.ngrok-free.app/process_text', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -168,3 +195,6 @@ const Chat = () => {
 };
 
 export default Chat;
+
+
+

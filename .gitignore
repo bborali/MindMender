@@ -2,3 +2,4 @@
 frontend/.DS_Store
 frontend/node_modules/*
 .env
+frontend/src/screens/Chat/aws.json
