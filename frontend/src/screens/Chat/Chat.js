@@ -73,7 +73,7 @@ const Chat = () => {
       setWaitingForResponse(true); // Start loading
 
 
-      const response = await fetch('https://dff6-104-198-104-232.ngrok-free.app/process_text', {
+      const response = await fetch('https://7b78-34-105-88-98.ngrok-free.app//process_text', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const Chat = () => {
       }
   
       const data = await response.json();
-      const answer = data.answer;
+      const answer = data.answer.result;
       addMessageToTranscript(answer, false);
       speak(answer); // Speak out the answer and restart recording afterwards
     } catch (error) {
